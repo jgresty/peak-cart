@@ -1,0 +1,68 @@
+Peak Technical Test
+===================
+
+Microservice that powers the shopping cart of an e-commerce website.
+
+Technical interview test for Peak.ai.
+
+
+Endpoints
+---------
+
+ - Add item to basket
+ - Remove item from basket
+ - Clear basket
+ - List all items
+ - Fit into single delivery box (10 KG)
+   - input: { id[], weight[], days to deliver[] } 
+       (side note: why is this not an array of items)
+   - output: { id[], delivery days sum }
+
+I'll plan the last one in more detail later
+
+
+Models
+------
+
+Item { id, title, price }
+Basket { items[], user }
+User? - we don't care for this purpose
+
+
+Persistence
+-----------
+
+Data can be stored in memory for purpose of demonstration. Want to keep the
+endpoints stateless so put this in a supervisor.
+
+
+Language / tech
+---------------
+
+Oh I could have fun with this but let's be sensible. As it is an interview test
+let's stick to s language that I will actually use - typescript seems apt.
+
+Express seems like a good shout to do this fairly easily.
+
+What is the popular test framework this month? Jest? Let's go with that
+
+
+Assumptions
+-----------
+
+One basket per user, that makes sense for an e-commerce website - that means we
+don't need a basket model as the user id will be the basket id
+
+Deployment stratergy isn't specified, this should be deployed in line with the
+rest of the system. I'll keep as much of the application as stateless as
+possible so that it can be deployed to whatever platform.
+
+More over granularity isn't specified - as this is pretty small I would deploy
+this all as one unit but I'll make it easy to deploy as individual functions
+with minimal changes and some code splitting.
+
+
+Auth?
+-----
+
+Worry about that later, assume one anonymous user for now.
