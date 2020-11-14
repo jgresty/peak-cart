@@ -44,6 +44,11 @@ describe("POST /", () => {
     const basket = await getAllItems();
     expect(response.body).toEqual(basket);
   });
+
+  it("returns 400 with a bad body", async () => {
+    const response = await request(app).post("/").send({ foo: "bar" });
+    expect(response.statusCode).toEqual(400);
+  });
 });
 
 describe("DELETE /:id", () => {
@@ -77,6 +82,11 @@ describe("DELETE /:id", () => {
     const basket = await getAllItems();
     expect(basket[0]).toEqual(basketItems[1]);
   });
+
+  it("returns 400 with an invalid uuid", async () => {
+    const res = await request(app).delete("/asdf");
+    expect(res.statusCode).toEqual(400);
+  });
 });
 
 describe("PUT /", () => {
@@ -96,6 +106,14 @@ describe("PUT /", () => {
 
     const basket = await getAllItems();
     expect(basket).toEqual([]);
+  });
+
+  it("returns 400 if items are provided in the body", async () => {
+    // We only implement clearing the basket, not setting it to arbitrary things like a normal PUT would do
+    const res = await request(app)
+      .put("/")
+      .send({ items: ["asdf"] });
+    expect(res.statusCode).toEqual(400);
   });
 });
 
