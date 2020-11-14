@@ -8,7 +8,9 @@
     "dev": "webpack --watch",
     "lint": "eslint src/ --ext .ts",
     "build": "webpack",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "auth": "podman run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:11.0.3",
+    "auth:setup": "./setup_auth.sh"
   },
   "author": "John Gresty",
   "license": "Zlib",

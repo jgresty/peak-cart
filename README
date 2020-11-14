@@ -5,11 +5,10 @@ Microservice that powers the shopping cart of an e-commerce website.
 
 Technical interview test for Peak.ai.
 
+Auth service requires podman, can also run on docker but you will need to alias
+docker=podman or change the script in package.json.
 
-TODO
-----
 
-Automate auth setup
 
 
 Endpoints
