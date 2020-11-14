@@ -1,4 +1,5 @@
 // Fake in memory database, this would be swapped out for something more persistant in a real application
+import { v4 as uuidv4 } from "uuid";
 
 export type UUID = string;
 
@@ -7,6 +8,10 @@ export type Item = {
   title: string;
   // price in pence
   price: number;
+};
+export type BasketItem = {
+  id: UUID;
+  item: UUID;
 };
 
 // Lookup table for items, these would be lookups from an external service in reality
@@ -30,13 +35,14 @@ export function getItems(ids: UUID[], table: Item[] = items): Promise<Item[]> {
   return Promise.resolve(filtered);
 }
 
-let basket: UUID[] = [];
+let basket: BasketItem[] = [];
 
-export function addItems(itemIds: UUID[]): Promise<void> {
-  basket = [...basket, ...itemIds];
-  return Promise.resolve();
+export function addItems(itemIds: UUID[]): Promise<BasketItem[]> {
+  const newItems = itemIds.map((item) => ({ id: uuidv4(), item }));
+  basket = [...basket, ...newItems];
+  return Promise.resolve(newItems);
 }
-export function getAllItems(): Promise<UUID[]> {
+export function getAllItems(): Promise<BasketItem[]> {
   // Return a copy so we don't accedently modify it
   return Promise.resolve([...basket]);
 }
