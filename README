@@ -6,6 +6,15 @@ Microservice that powers the shopping cart of an e-commerce website.
 Technical interview test for Peak.ai.
 
 
+TODO
+----
+
+Validate data
+Filter invalid item ids
+Auth
+Implement that last endpoint
+
+
 Endpoints
 ---------
 
@@ -13,7 +22,7 @@ Endpoints
     - POST / { items: itemId[] }
 
  - Remove item from basket
-    - DELETE /:itemId
+    - DELETE /:basketItemId
 
  - Clear basket
     - PUT / { items: [] }
@@ -29,30 +38,22 @@ Endpoints
 I'll plan the last one in more detail later
 
 
-Models
-------
-
-Item { id, title, price }
-Basket { items[], user }
-User? - we don't care for this purpose
-
-
 Persistence
 -----------
 
-Data can be stored in memory for purpose of demonstration. Want to keep the
-endpoints stateless so put this in a supervisor.
-
+Data can be stored in memory for purpose of demonstration. Everything is in
+src/store.ts to keep the logic away from the service endpoints, this way the
+services can be stateless. Pretty much everything in that file would be
+replaced with a proper data layer.
 
 Language / tech
 ---------------
 
-Oh I could have fun with this but let's be sensible. As it is an interview test
-let's stick to s language that I will actually use - typescript seems apt.
-
-Express seems like a good shout to do this fairly easily.
-
-What is the popular test framework this month? Jest? Let's go with that
+Chosen typescript as it is an interview test and that is what everyone is
+expecting what I will be doing on the job the most. Paired with express as it
+is easy to do this kind of thing in it as well as it being very widely
+supported. Testing done with jest as that is what is the most popular at the
+moment.
 
 
 Assumptions
@@ -65,7 +66,7 @@ All items are already known, maybe by some external service that we can verify
 with, but for this demonstration I am going to encode them in a static list.
 This way the client only needs to send us an id and we can trust it.
 
-Deployment stratergy isn't specified, this should be deployed in line with the
+Deployment strategy isn't specified, this should be deployed in line with the
 rest of the system. I'll keep as much of the application as stateless as
 possible so that it can be deployed to whatever platform.
 
