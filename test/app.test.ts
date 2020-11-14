@@ -1,8 +1,9 @@
 import * as request from "supertest";
-import app from "../src/app";
+import createApp from "../src/app";
 import { addItems, getAllItems, clearItems } from "../src/store";
 
 describe("POST /", () => {
+  const app = createApp();
   beforeEach(clearItems);
 
   it("returns 201", async () => {
@@ -63,6 +64,7 @@ describe("POST /", () => {
 });
 
 describe("DELETE /:id", () => {
+  const app = createApp();
   beforeEach(clearItems);
 
   it("returns 204", async () => {
@@ -101,6 +103,7 @@ describe("DELETE /:id", () => {
 });
 
 describe("PUT /", () => {
+  const app = createApp();
   beforeEach(clearItems);
 
   it("returns 204", async () => {
@@ -129,6 +132,7 @@ describe("PUT /", () => {
 });
 
 describe("GET /", () => {
+  const app = createApp();
   beforeEach(clearItems);
 
   it("returns 200", async () => {

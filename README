@@ -9,8 +9,8 @@ Technical interview test for Peak.ai.
 TODO
 ----
 
-Auth
 Implement that last endpoint
+Automate auth setup
 
 
 Endpoints
@@ -73,7 +73,13 @@ this all as one unit but I'll make it easy to deploy as individual functions
 with minimal changes and some code splitting.
 
 
-Auth?
------
+Auth
+----
 
-Worry about that later, assume one anonymous user for now.
+Usually this would be already handled by the larger system, we don't have a
+larger system here but I need something to identify users. I'd like to have
+something real feeling as opposed to just implicitly trusting every request
+belongs to the user they say it does.
+
+Thinking openid connect as this is a microservice, possibly with jwt to keep
+the service stateless.
