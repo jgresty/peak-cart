@@ -12,4 +12,8 @@ app.delete("/:id", (req, res) =>
   services.deleteItem(req.params.id).then(res.status(204).send.bind(res))
 );
 
+app.put("/", (req, res) =>
+  services.clearItems().then(res.status(204).send.bind(res))
+);
+
 export default app;

@@ -78,3 +78,23 @@ describe("DELETE /:id", () => {
     expect(basket[0]).toEqual(basketItems[1]);
   });
 });
+
+describe("PUT /", () => {
+  beforeEach(clearItems);
+
+  it("returns 204", async () => {
+    const res = await request(app).put("/").send({ items: [] });
+    expect(res.statusCode).toEqual(204);
+  });
+
+  it("removes all items from the basket", async () => {
+    await addItems([
+      "01e9f083-1c18-4769-a6ce-d2c75e68e0f1",
+      "ec663273-9dff-461d-bbe1-dfbe2c7f3d51",
+    ]);
+    await request(app).put("/").send({ items: [] });
+
+    const basket = await getAllItems();
+    expect(basket).toEqual([]);
+  });
+});
