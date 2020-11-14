@@ -1,5 +1,5 @@
-import { clearItems } from "../store";
+import { UUID, clearItems } from "../store";
 
-export default function (): Promise<void> {
-  return clearItems();
+export default function (user: UUID): Promise<void> {
+  return clearItems(user);
 }

@@ -16,7 +16,9 @@ export default function (...middleware: Middleware[]): express.Express {
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      return services.addItem(req.body).then(res.status(201).send.bind(res));
+      return services
+        .addItem(req.user.sub, req.body)
+        .then(res.status(201).send.bind(res));
     }
   );
 
@@ -26,7 +28,7 @@ export default function (...middleware: Middleware[]): express.Express {
       return res.status(400).json({ errors: errors.array() });
     }
     return services
-      .deleteItem(req.params.id)
+      .deleteItem(req.user.sub, req.params.id)
       .then(res.status(204).send.bind(res));
   });
 
@@ -35,11 +37,15 @@ export default function (...middleware: Middleware[]): express.Express {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    return services.clearItems().then(res.status(204).send.bind(res));
+    return services
+      .clearItems(req.user.sub)
+      .then(res.status(204).send.bind(res));
   });
 
   app.get("/", (req, res) => {
-    return services.getAllItems().then(res.status(200).send.bind(res));
+    return services
+      .getAllItems(req.user.sub)
+      .then(res.status(200).send.bind(res));
   });
 
   return app;

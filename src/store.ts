@@ -12,6 +12,7 @@ export type Item = {
 export type BasketItem = {
   id: UUID;
   item: UUID;
+  user: UUID;
 };
 
 // Lookup table for items, these would be lookups from an external service in reality
@@ -37,21 +38,34 @@ export function getItems(ids: UUID[], table: Item[] = items): Promise<Item[]> {
 
 let basket: BasketItem[] = [];
 
-export async function addItems(itemIds: UUID[]): Promise<BasketItem[]> {
+export async function addItems(
+  user: UUID,
+  itemIds: UUID[]
+): Promise<BasketItem[]> {
   const validItems = await getItems(itemIds);
-  const newItems = validItems.map((item) => ({ id: uuidv4(), item: item.id }));
+  const newItems = validItems.map((item) => ({
+    id: uuidv4(),
+    item: item.id,
+    user,
+  }));
   basket = [...basket, ...newItems];
   return newItems;
 }
-export function getAllItems(): Promise<BasketItem[]> {
-  // Return a copy so we don't accedently modify it
-  return Promise.resolve([...basket]);
+export function getAllItems(user: UUID): Promise<BasketItem[]> {
+  const userBasket = basket.filter((basketItem) => basketItem.user === user);
+  return Promise.resolve(userBasket);
 }
-export function clearItems(): Promise<void> {
-  basket = [];
+export function clearItems(user?: UUID): Promise<void> {
+  if (user == null) {
+    basket = [];
+  } else {
+    basket = basket.filter((basketItem) => basketItem.user !== user);
+  }
   return Promise.resolve();
 }
-export function removeItem(id: UUID): Promise<void> {
-  basket = basket.filter((basketItem) => basketItem.id !== id);
+export function removeItem(user: UUID, id: UUID): Promise<void> {
+  basket = basket.filter(
+    (basketItem) => basketItem.id !== id || basketItem.user !== user
+  );
   return Promise.resolve();
 }
