@@ -16,4 +16,8 @@ app.put("/", (req, res) =>
   services.clearItems().then(res.status(204).send.bind(res))
 );
 
+app.get("/", (req, res) =>
+  services.getAllItems().then(res.status(200).send.bind(res))
+);
+
 export default app;

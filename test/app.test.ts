@@ -98,3 +98,40 @@ describe("PUT /", () => {
     expect(basket).toEqual([]);
   });
 });
+
+describe("GET /", () => {
+  beforeEach(clearItems);
+
+  it("returns 200", async () => {
+    const res = await request(app).get("/");
+    expect(res.statusCode).toEqual(200);
+  });
+
+  it("returns an empty array with an empty basket", async () => {
+    const res = await request(app).get("/");
+    expect(res.body).toEqual([]);
+  });
+
+  it("returns all the basket items in the basket", async () => {
+    const basketItems = await addItems([
+      "01e9f083-1c18-4769-a6ce-d2c75e68e0f1",
+      "ec663273-9dff-461d-bbe1-dfbe2c7f3d51",
+    ]);
+    const result = await request(app).get("/");
+    expect(result.body.map((basketItem) => basketItem.id)).toEqual(
+      basketItems.map((basketItem) => basketItem.id)
+    );
+  });
+
+  it("returns the information about each item in the basket", async () => {
+    await addItems([
+      "01e9f083-1c18-4769-a6ce-d2c75e68e0f1",
+      "ec663273-9dff-461d-bbe1-dfbe2c7f3d51",
+    ]);
+    const result = await request(app).get("/");
+    expect(result.body.map((basketItem) => basketItem.item.title)).toEqual(
+      // item titles are hardcoded in the store
+      ["aaa", "jjj"]
+    );
+  });
+});
