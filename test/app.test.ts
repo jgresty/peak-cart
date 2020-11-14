@@ -49,6 +49,17 @@ describe("POST /", () => {
     const response = await request(app).post("/").send({ foo: "bar" });
     expect(response.statusCode).toEqual(400);
   });
+
+  it("does not add item ids which don't correspond to real items", async () => {
+    const items = [
+      "01e9f083-1c18-4769-a6ce-d2c75e68e0f1",
+      "00000000-0000-0000-0000-000000000000",
+    ];
+    await request(app).post("/").send({ items });
+    const basket = await getAllItems();
+    const addedItems = basket.map((basketItem) => basketItem.item);
+    expect(addedItems).toEqual([items[0]]);
+  });
 });
 
 describe("DELETE /:id", () => {

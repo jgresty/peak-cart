@@ -37,10 +37,11 @@ export function getItems(ids: UUID[], table: Item[] = items): Promise<Item[]> {
 
 let basket: BasketItem[] = [];
 
-export function addItems(itemIds: UUID[]): Promise<BasketItem[]> {
-  const newItems = itemIds.map((item) => ({ id: uuidv4(), item }));
+export async function addItems(itemIds: UUID[]): Promise<BasketItem[]> {
+  const validItems = await getItems(itemIds);
+  const newItems = validItems.map((item) => ({ id: uuidv4(), item: item.id }));
   basket = [...basket, ...newItems];
-  return Promise.resolve(newItems);
+  return newItems;
 }
 export function getAllItems(): Promise<BasketItem[]> {
   // Return a copy so we don't accedently modify it
