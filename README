@@ -10,9 +10,17 @@ Endpoints
 ---------
 
  - Add item to basket
+    - POST / { items: itemId[] }
+
  - Remove item from basket
+    - DELETE /:itemId
+
  - Clear basket
+    - PUT / { items: [] }
+
  - List all items
+    - GET /
+
  - Fit into single delivery box (10 KG)
    - input: { id[], weight[], days to deliver[] } 
        (side note: why is this not an array of items)
@@ -52,6 +60,10 @@ Assumptions
 
 One basket per user, that makes sense for an e-commerce website - that means we
 don't need a basket model as the user id will be the basket id
+
+All items are already known, maybe by some external service that we can verify
+with, but for this demonstration I am going to encode them in a static list.
+This way the client only needs to send us an id and we can trust it.
 
 Deployment stratergy isn't specified, this should be deployed in line with the
 rest of the system. I'll keep as much of the application as stateless as
