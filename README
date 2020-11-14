@@ -9,6 +9,29 @@ Auth service requires podman, can also run on docker but you will need to alias
 docker=podman or change the script in package.json.
 
 
+Setup
+-----
+
+Install packages: `npm install`
+Start the auth service (keycloak): `npm run auth`
+When that is done add the client to the auth serivce `npm run auth:setup`
+Run development service `npm run dev`
+
+
+Deployment
+----------
+
+As this is a pretty service unit it makes sense to deploy it all as one unit,
+it can be deployed on any standard server under a supervisor (systemd, pm2,
+etc) by using the default entry point src/index.ts. It could also be deployed
+to platforms with dynamic invocation by using the entry point src/app.ts.
+
+As the application (except the mock data layer in src/store.ts) is stateless,
+multiple of this service can be deployed simultaneously, or it can be scaled
+out at runtime, without issue.
+
+There is nothing special about the application build or deploy process so all
+that can be easily handled by CI.
 
 
 Endpoints
@@ -34,11 +57,6 @@ Endpoints
 This last endpoint is more of an RPC than a REST endpoint, I'll segregate it
 off into /rpc
 
-Don't expect the input to be very large so I'll just do a naïve algo
-
-Seems like a 0-1 knapsack problem
-Scratch that, it is far simpler
-
 
 Persistence
 -----------
@@ -47,6 +65,10 @@ Data can be stored in memory for purpose of demonstration. Everything is in
 src/store.ts to keep the logic away from the service endpoints, this way the
 services can be stateless. Pretty much everything in that file would be
 replaced with a proper data layer.
+
+In production I would match whatever the larger system is using for a database,
+if there isn't one then my go to is postgresql just for its battle hardened
+proven track record.
 
 Language / tech
 ---------------
@@ -85,5 +107,6 @@ larger system here but I need something to identify users. I'd like to have
 something real feeling as opposed to just implicitly trusting every request
 belongs to the user they say it does.
 
-Thinking openid connect as this is a microservice, possibly with jwt to keep
-the service stateless.
+Locally I have chosen to use keycloak arbitrarily but the system will work with
+any JWT issuing service. It can also be changed to any other kind of auth
+service by replacing the function in src/auth.ts.
