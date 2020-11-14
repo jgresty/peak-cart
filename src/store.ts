@@ -1,6 +1,6 @@
 // Fake in memory database, this would be swapped out for something more persistant in a real application
 
-type UUID = string;
+export type UUID = string;
 
 export type Item = {
   id: UUID;
@@ -28,4 +28,19 @@ const items: Item[] = [
 export function getItems(ids: UUID[], table: Item[] = items): Promise<Item[]> {
   const filtered = table.filter((item) => ids.includes(item.id));
   return Promise.resolve(filtered);
+}
+
+let basket: UUID[] = [];
+
+export function addItems(itemIds: UUID[]): Promise<void> {
+  basket = [...basket, ...itemIds];
+  return Promise.resolve();
+}
+export function getAllItems(): Promise<UUID[]> {
+  // Return a copy so we don't accedently modify it
+  return Promise.resolve([...basket]);
+}
+export function clearItems(): Promise<void> {
+  basket = [];
+  return Promise.resolve();
 }
