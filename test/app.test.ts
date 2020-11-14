@@ -245,3 +245,22 @@ describe("Multiple users", () => {
     expect(result.body).toEqual([]);
   });
 });
+
+describe("POST /rpc/delivery", () => {
+  const app = createApp();
+
+  it("returns expected value", async () => {
+    // This example is taken directly from the requirements
+    const body = {
+      id: ["Item1", "Item2", "Item3", "Item4", "Item5", "Item6"],
+      weight: [1, 8, 7, 4, 3, 2],
+      days: [4, 1, 2, 10, 3, 5],
+    };
+    const result = await request(app).post("/rpc/delivery").send(body);
+    const expected = {
+      id: ["Item2", "Item1"],
+      days: 5,
+    };
+    expect(result.body).toEqual(expected);
+  });
+});

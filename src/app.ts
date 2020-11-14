@@ -8,6 +8,12 @@ export default function (...middleware: Middleware[]): express.Express {
   const app = middleware.reduce((app, func) => func(app), express());
   app.use(express.json());
 
+  app.post("/rpc/delivery", (req, res) =>
+    res
+      .status(200)
+      .send(services.delivery(req.body.id, req.body.weight, req.body.days))
+  );
+
   app.post(
     "/",
     [body("items").isArray(), body("items.*").isUUID()],

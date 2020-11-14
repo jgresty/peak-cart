@@ -9,7 +9,6 @@ Technical interview test for Peak.ai.
 TODO
 ----
 
-Implement that last endpoint
 Automate auth setup
 
 
@@ -33,7 +32,13 @@ Endpoints
        (side note: why is this not an array of items)
    - output: { id[], delivery days sum }
 
-I'll plan the last one in more detail later
+This last endpoint is more of an RPC than a REST endpoint, I'll segregate it
+off into /rpc
+
+Don't expect the input to be very large so I'll just do a naïve algo
+
+Seems like a 0-1 knapsack problem
+Scratch that, it is far simpler
 
 
 Persistence
