@@ -1,6 +1,6 @@
 import * as request from "supertest";
 import app from "../src/app";
-import { getAllItems, clearItems } from "../src/store";
+import { addItems, getAllItems, clearItems } from "../src/store";
 
 describe("POST /", () => {
   beforeEach(clearItems);
@@ -43,5 +43,38 @@ describe("POST /", () => {
     const response = await request(app).post("/").send({ items });
     const basket = await getAllItems();
     expect(response.body).toEqual(basket);
+  });
+});
+
+describe("DELETE /:id", () => {
+  beforeEach(clearItems);
+
+  it("returns 204", async () => {
+    const basketItems = await addItems([
+      "01e9f083-1c18-4769-a6ce-d2c75e68e0f1",
+    ]);
+    const res = await request(app).delete(`/${basketItems[0].id}`);
+    expect(res.statusCode).toEqual(204);
+  });
+
+  it("removes an item from the basket", async () => {
+    const basketItems = await addItems([
+      "01e9f083-1c18-4769-a6ce-d2c75e68e0f1",
+    ]);
+    await request(app).delete(`/${basketItems[0].id}`);
+
+    const basket = await getAllItems();
+    expect(basket).toEqual([]);
+  });
+
+  it("only removes the specified item from the basket", async () => {
+    const basketItems = await addItems([
+      "01e9f083-1c18-4769-a6ce-d2c75e68e0f1",
+      "ec663273-9dff-461d-bbe1-dfbe2c7f3d51",
+    ]);
+    await request(app).delete(`/${basketItems[0].id}`);
+
+    const basket = await getAllItems();
+    expect(basket[0]).toEqual(basketItems[1]);
   });
 });

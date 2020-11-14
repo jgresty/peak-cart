@@ -50,3 +50,7 @@ export function clearItems(): Promise<void> {
   basket = [];
   return Promise.resolve();
 }
+export function removeItem(id: UUID): Promise<void> {
+  basket = basket.filter((basketItem) => basketItem.id !== id);
+  return Promise.resolve();
+}

@@ -1,5 +1,7 @@
-import addItem from './addItem'
+import addItem from "./addItem";
+import deleteItem from "./deleteItem";
 
 export default {
-    addItem
-}
+  addItem,
+  deleteItem,
+};
