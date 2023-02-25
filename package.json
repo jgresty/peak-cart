@@ -16,7 +16,7 @@
   "license": "Zlib",
   "dependencies": {
     "@types/node": "^14.14.7",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "express-jwt": "^6.0.0",
     "express-validator": "^6.6.1",
     "regenerator-runtime": "^0.13.7",
